@@ -136,16 +136,11 @@ See `ibuffer-formats' for details."
 (define-ibuffer-column icon
   (:name "" :inline t)
   (if nerd-icons-ibuffer-icon
-      (let ((icon (cond ((and (buffer-file-name) (nerd-icons-auto-mode-match?))
-                         (nerd-icons-icon-for-file (file-name-nondirectory (buffer-file-name))
-                                                   :height nerd-icons-ibuffer-icon-size))
-                        ((eq major-mode 'dired-mode)
-                         (nerd-icons-icon-for-dir (buffer-name)
-                                                  :height nerd-icons-ibuffer-icon-size
-                                                  :face 'nerd-icons-ibuffer-dir-face))
-                        (t
-                         (nerd-icons-icon-for-mode major-mode
-                                                   :height nerd-icons-ibuffer-icon-size)))))
+      (let ((icon (if (eq major-mode 'dired-mode)
+                      (nerd-icons-icon-for-dir (buffer-name)
+                                               :height nerd-icons-ibuffer-icon-size
+                                               :face 'nerd-icons-ibuffer-dir-face)
+                    (nerd-icons-icon-for-buffer :height nerd-icons-ibuffer-icon-size))))
         (concat
          (if (or (null icon) (symbolp icon))
              (nerd-icons-faicon "nf-fa-file_o"
